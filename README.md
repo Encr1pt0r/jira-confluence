@@ -18,8 +18,10 @@ python jc.py config show
 
 **PowerShell** - Add to your profile:
 ```powershell
-function jc { python C:\Users\kevin.mbuluko\projects\jira-discovery\jc.py $args }
+function jc { python /path/to/jira-discovery/jc.py $args }
 ```
+
+Replace `/path/to/jira-discovery` with your actual installation path.
 
 To edit profile: `notepad $PROFILE`
 
@@ -58,7 +60,7 @@ jc comment list SD-5787                   # Show comments
 ### Edit Tickets
 ```bash
 jc edit SD-5787 --summary "New title"
-jc edit SD-5787 --assignee "kevin.mbuluko"
+jc edit SD-5787 --assignee "username"
 jc edit SD-5787 --priority "High"
 jc transition SD-5787                     # Show available transitions
 jc transition SD-5787 "In Progress"      # Change status
@@ -193,14 +195,7 @@ jc comment add SD-5787 "Completed and tested"
 
 # Find team docs
 jc confluence search "wildcat playbook"
-```
-
-## Tested & Working ✓
-
-- ✓ Configuration saved
-- ✓ Retrieved tickets (SD-3283, SD-3432, SD-3792, SD-3589)
-- ✓ Confluence search working
-- ✓ All CRUD operations functional
+``
 
 ## Support
 
