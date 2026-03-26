@@ -1,0 +1,46 @@
+╔════════════════════════════════════════════════════════════════╗
+║                    JC - QUICK COMMANDS                         ║
+╚════════════════════════════════════════════════════════════════╝
+
+┌─ YOUR WORK ─────────────────────────────────────────────────────┐
+│ jc ticket mine                    → Your tickets                │
+│ jc ticket mine --limit 20         → More results                │
+│ jc sprint --component "ProductArea:H&C"  → Wildcat sprint       │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ VIEW TICKETS ──────────────────────────────────────────────────┐
+│ jc ticket get SD-5787             → Basic details               │
+│ jc ticket get SD-5787 --full      → Full details                │
+│ jc ticket get SD-5787 --comments  → Include comments            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ UPDATE TICKETS ────────────────────────────────────────────────┐
+│ jc comment add SD-5787 "text"     → Add comment                 │
+│ jc transition SD-5787 "In Progress" → Change status             │
+│ jc edit SD-5787 --assignee "user" → Assign ticket              │
+│ jc edit SD-5787 --priority "High" → Change priority            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ SEARCH ────────────────────────────────────────────────────────┐
+│ jc ticket search "status = Open"  → JQL search                  │
+│ jc confluence search "wildcat"    → Search Confluence           │
+│ jc projects --search "health"     → Search projects             │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ CONFLUENCE ────────────────────────────────────────────────────┐
+│ jc confluence search "wildcat sprint review"  → Find docs       │
+│ jc confluence spaces --search "H&C"  → Find spaces              │
+│ jc confluence page 6725500929 --preview  → View page            │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─ HELP ──────────────────────────────────────────────────────────┐
+│ jc --help                         → All commands                │
+│ jc ticket --help                  → Ticket commands             │
+│ jc comment --help                 → Comment commands            │
+│ jc confluence --help              → Confluence commands         │
+└─────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+ FIRST TIME? → Restart PowerShell, then type: jc ticket mine
+ DOCS → See README.md, CHEATSHEET.md, ALIAS_INSTALLED.md
+═══════════════════════════════════════════════════════════════════
