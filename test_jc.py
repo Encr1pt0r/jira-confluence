@@ -20,6 +20,8 @@ from jc import cli, client
 from jc.formatters import extract_text_from_adf, clean_html, html_to_markdown
 from jc.client import CONFIG_FILE
 import jc
+jc_client_module = sys.modules['jc.client']
+jc_config_module = sys.modules['jc.commands.config']
 
 
 class TestADFTextExtraction:
@@ -293,7 +295,7 @@ class TestConfigCommands:
         """Setup test runner"""
         self.runner = CliRunner()
 
-    @patch('jc.client.CONFIG_FILE')
+    @patch.object(jc_client_module, 'CONFIG_FILE')
     def test_config_set(self, mock_config_file):
         """Test setting configuration"""
         with self.runner.isolated_filesystem():
@@ -310,7 +312,7 @@ class TestConfigCommands:
             assert result.exit_code == 0
             assert 'Configuration saved' in result.output
 
-    @patch('jc.client.CONFIG_FILE')
+    @patch.object(jc_client_module, 'CONFIG_FILE')
     def test_config_show(self, mock_config_file):
         """Test showing configuration"""
         mock_config_file.exists.return_value = True
@@ -330,7 +332,7 @@ class TestConfigCommands:
             assert 'secret-token' not in result.output  # Should be masked
             assert '**' in result.output
 
-    @patch('jc.commands.config.CONFIG_FILE')
+    @patch.object(jc_config_module, 'CONFIG_FILE')
     def test_config_clear(self, mock_config_file):
         """Test clearing configuration"""
         mock_config_file.exists.return_value = True
@@ -631,7 +633,7 @@ class TestConfluenceCommands:
         """Setup test runner"""
         self.runner = CliRunner()
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_spaces(self, mock_confluence_get):
         """Test listing Confluence spaces"""
         mock_confluence_get.return_value = {
@@ -649,7 +651,7 @@ class TestConfluenceCommands:
             assert 'Test Space' in result.output
             assert 'DEMO' in result.output
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_pages(self, mock_confluence_get):
         """Test listing pages in a space"""
         mock_confluence_get.return_value = {
@@ -672,7 +674,7 @@ class TestConfluenceCommands:
             assert 'Page 1' in result.output
             assert 'Page 2' in result.output
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_page_detail(self, mock_confluence_get):
         """Test getting page details"""
         mock_confluence_get.return_value = {
@@ -693,7 +695,7 @@ class TestConfluenceCommands:
             assert 'Test Page' in result.output
             assert 'This is the page content' in result.output
 
-    @patch('jc.client.client.confluence_search')
+    @patch.object(client, 'confluence_search')
     def test_confluence_search(self, mock_search):
         """Test searching Confluence"""
         mock_search.return_value = [
@@ -712,7 +714,7 @@ class TestConfluenceCommands:
             assert 'Search Result 1' in result.output
             assert 'This is a test result' in result.output
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_basic(self, mock_confluence_get):
         """Test getting page from URL"""
         mock_confluence_get.return_value = {
@@ -737,7 +739,7 @@ class TestConfluenceCommands:
             assert 'Page ID: 999' in result.output
             assert 'Space: 12345' in result.output
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_with_preview(self, mock_confluence_get):
         """Test getting page from URL with content preview"""
         mock_confluence_get.return_value = {
@@ -763,8 +765,8 @@ class TestConfluenceCommands:
             assert 'Content Preview:' in result.output
             assert 'test' in result.output
 
-    @patch('jc.client.client.confluence_get_children')
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get_children')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_with_children(self, mock_confluence_get, mock_get_children):
         """Test getting page from URL with child pages"""
         mock_confluence_get.return_value = {
@@ -800,7 +802,7 @@ class TestConfluenceCommands:
             assert '/wiki/pages/778' in result.output
             assert '/wiki/pages/779' in result.output
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_invalid_url(self, mock_confluence_get):
         """Test handling invalid URL format"""
         with patch.object(client, 'config', {'server': 'https://test.atlassian.net'}):
@@ -812,8 +814,8 @@ class TestConfluenceCommands:
             assert result.exit_code == 0
             assert 'Could not extract page ID' in result.output
 
-    @patch('jc.client.client.confluence_get_children')
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get_children')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_with_output(self, mock_confluence_get, mock_get_children):
         """Test exporting page to file"""
         mock_confluence_get.return_value = {
@@ -857,7 +859,7 @@ class TestConfluenceCommands:
                     # Verify content is NOT truncated
                     assert '(truncated)' not in content
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_from_url_with_output_no_children(self, mock_confluence_get):
         """Test exporting page without children to file"""
         mock_confluence_get.return_value = {
@@ -889,7 +891,7 @@ class TestConfluenceCommands:
                     assert 'Simple content without children' in content
                     assert 'Child Pages' not in content
 
-    @patch('jc.client.client.confluence_get')
+    @patch.object(client, 'confluence_get')
     def test_confluence_get_children_method(self, mock_get):
         """Test confluence_get_children client method"""
         mock_get.return_value = {
@@ -1012,7 +1014,7 @@ class TestErrorHandling:
 class TestAtlassianClient:
     """Test AtlassianClient class"""
 
-    @patch('jc.client.CONFIG_FILE')
+    @patch.object(jc_client_module, 'CONFIG_FILE')
     def test_load_config_from_file(self, mock_config_file):
         """Test loading config from file"""
         mock_config_file.exists.return_value = True
@@ -1028,7 +1030,7 @@ class TestAtlassianClient:
             assert test_client.config['server'] == 'https://test.atlassian.net'
             assert test_client.config['email'] == 'test@example.com'
 
-    @patch('jc.client.CONFIG_FILE')
+    @patch.object(jc_client_module, 'CONFIG_FILE')
     @patch.dict(os.environ, {
         'JIRA_SERVER': 'https://env.atlassian.net',
         'JIRA_EMAIL': 'env@example.com',
