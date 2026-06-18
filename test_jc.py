@@ -6,9 +6,8 @@ Tests all commands, ADF parsing, and output formatting
 
 import pytest
 import json
-from unittest.mock import Mock, patch, MagicMock, mock_open
+from unittest.mock import Mock, patch, mock_open
 from click.testing import CliRunner
-from pathlib import Path
 import sys
 import os
 
@@ -18,8 +17,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Import from the jc package
 from jc import cli, client
 from jc.formatters import extract_text_from_adf, clean_html, html_to_markdown
-from jc.client import CONFIG_FILE
-import jc
 jc_client_module = sys.modules['jc.client']
 jc_config_module = sys.modules['jc.commands.config']
 
