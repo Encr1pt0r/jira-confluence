@@ -6,7 +6,6 @@ Provides easy commands to run different types of tests
 
 import subprocess
 import sys
-from pathlib import Path
 
 
 def run_all_tests():
